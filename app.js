@@ -1,27 +1,38 @@
-require('dotenv').config();
-console.log(process.env.DB_USERNAME);
-console.log(process.env.DB_PASSWORD);
-console.log(process.env.DB_DATABASE);
-console.log(process.env.DB_HOST);
-const express = require('express')
-const { Sequelize } = require('sequelize')
+const express = require('express')  
+const sequelize = require('./src/config/sequelize');
+const initializePassport = require('./src/config/passport'); 
+const passport = require('passport');
+const session = require('express-session');
 
-
-const sequelize = new Sequelize({
-    database: process.env.DB_DATABASE,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    dialect: 'postgres',
-  });
-  
-  
 
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+
+// Session Middleware 
+app.use (session({
+    secret: 'session-secret',
+    resave: false, 
+    saveUninitialized: false,
+    cookie: { secure: false} // set to true if using HTTPS
+}));
+
+
+//Iinit Passport 
+initializePassport(passport);
+
+// Passport Middleware
+app.use(passport.initialize()); // Initialize Passport middleware
+app.use(passport.session()); // Enable session support for
+
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+
+
 
 app.get('/', (req,res) =>{
 res.send('Hello World!')

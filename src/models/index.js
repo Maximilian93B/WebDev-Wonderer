@@ -1,0 +1,47 @@
+const Sequelize = require('sequelize');
+const sequelize = require('../config/sequelize');
+
+
+// Import all Models 
+const User = require('./user')(sequelize, Sequelize.DataTypes);
+const UserProgress = require('./userProgress')(sequelize, Sequelize.DataTypes);
+const Territory = require('./territory')(sequelize, Sequelize.DataTypes);
+const District = require('./district')(sequelize, Sequelize.DataTypes);
+const Cell = require('./cells')(sequelize, Sequelize.DataTypes);
+const Challenge = require('./challenge')(sequelize, Sequelize.DataTypes);
+
+// Set assoiciations
+
+//User assoications 
+User.hasMany(UserProgress, { foreignKey: 'user_id' });
+UserProgress.belongsTo(User, { foreignKey: 'user_id' });
+
+
+//Territory assoiciations
+Territory.hasMany(District, { foreignKey: 'territory_id' });
+District.belongsTo(Territory, { foreignKey: 'territory_id' });
+
+
+//District assoications 
+District.hasMany(Cell, { foreignKey: 'district_id' });
+Cell.belongsTo(District, { foreignKey: 'district_id' });
+
+
+// Cell associations 
+Cell.hasMany(Challenge, { foreignKey: 'cell_id' });
+Challenge.belongsTo(Cell, { foreignKey: 'cell_id' });
+
+// Challenge assoiciations 
+Challenge.hasMany(UserProgress, { foreignKey: 'challenge_id' });
+UserProgress.belongsTo(Challenge, { foreignKey: 'challenge_id' });
+
+
+
+module.exports = {
+    User,
+    UserProgress,
+    Territory,
+    District,
+    Cell,
+    Challenge, 
+};
