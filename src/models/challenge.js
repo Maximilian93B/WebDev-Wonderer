@@ -1,16 +1,3 @@
-/*
--- Challenges Table
-CREATE TABLE challenges (
-    id SERIAL PRIMARY KEY,
-    cell_id INT NOT NULL,
-    title TEXT,
-    description TEXT,
-    solution_hash TEXT,
-    FOREIGN KEY (cell_id) REFERENCES cells (id)
-);
-*/
-
-const sequelize = require("../config/sequelize");
 
 module.exports = (sequelize, DataTypes) => {
     const Challenge = sequelize.define('Challenge', {

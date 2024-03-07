@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
     const Territory = sequelize.define('Territory', {
         id: {

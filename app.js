@@ -12,10 +12,10 @@ const port = process.env.PORT || 3000;
 
 // Session Middleware 
 app.use (session({
-    secret: 'session-secret',
+    secret: process.env.SESSION_SECRET,
     resave: false, 
     saveUninitialized: false,
-    cookie: { secure: false} // set to true if using HTTPS
+    cookie: { secure: false} // set to true if using HTTPS // add to .env and use secure cookies when ready 
 }));
 
 
@@ -40,18 +40,17 @@ res.send('Hello World!')
 
 
 async function assertDatabaseConnection() {
-    console.log ('Checking database connection...');
+    console.log('Checking database connection...');
     try {
-        await sequelize.authenticate();
-        console.log('Database connection OK!');
-
-    } catch (error) {
-        console.error('Unable to connect to the db:', error)
+        await sequelize.sync({ force: false, logging: console.log }); // Add logging config as needed
+        console.log('DB synced!');
+    } catch (error) { // Corrected typo
+        console.error('Unable to sync DB!', error);
         process.exit(1);
     }
-}
+};
 
-app.listen(port, async() => {
-    console.log(`Server is running on port ${port}`)
+app.listen(port, async () => {
+    console.log(`Server is running on port ${port}`);
     await assertDatabaseConnection();
 });

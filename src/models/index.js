@@ -1,3 +1,4 @@
+
 const Sequelize = require('sequelize');
 const sequelize = require('../config/sequelize');
 
@@ -38,6 +39,8 @@ UserProgress.belongsTo(Challenge, { foreignKey: 'challenge_id' });
 
 
 module.exports = {
+    sequelize,
+    Sequelize,
     User,
     UserProgress,
     Territory,

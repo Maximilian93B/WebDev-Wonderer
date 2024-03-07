@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
     const UserProgress = sequelize.define('UserProgress', {
       id: {
