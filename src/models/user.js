@@ -1,6 +1,12 @@
 
+const bcrypt = require('bcryptjs');
+
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
+      isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       username: {
         type: DataTypes.STRING,
         allowNull: false, // Corrected typo here
@@ -9,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       email: { // Corrected field name typo
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+          isEmail: true, // Validates the email format
+        },
       },
       password: {
         type: DataTypes.STRING,
@@ -29,6 +38,11 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
       underscored: true,
     });
+
+    User.beforeCreate(async (user, options) => {
+      const hashedPassword = await bcrypt.hash(user.password, 10);
+      user.password = hashedPassword;
+  });
   
     return User;
   };
