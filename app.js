@@ -32,7 +32,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+    res.status(500).send('Something went wrong!:', req.body);
+    next();
 });
 
 
@@ -51,7 +52,7 @@ app.use('/', routes);
 async function assertDatabaseConnection() {
     console.log('Checking database connection...');
     try {
-        await sequelize.sync({ force: true , logging: console.log }); // Add logging config as needed
+        await sequelize.sync({ force: false , logging: console.log }); // Add logging config as needed
         console.log('DB synced!');
     } catch (error) { // Corrected typo
         console.error('Unable to sync DB!', error);

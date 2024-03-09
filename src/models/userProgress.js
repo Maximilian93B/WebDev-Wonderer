@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT
       }
     }, {
+      modelName:'UserProgress',
       tableName: 'user_progress',
       timestamps: true,
       underscored: true,

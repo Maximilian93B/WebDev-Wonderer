@@ -1,28 +1,29 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, searchUsers, listAllUsers, getUserById } = require('../controllers/userController'); // add controllers here as needed 
-const isAdmin =require('../../utils/isAdmin');
-//const isAdmin = require('../../utils/isAdmin');
+const { registerUser, listAllUsers, getUserById, getAllUserProgress, getUserProgressByUserId } = require('../controllers/userController'); // add controllers here as needed 
+//const isAdmin =require('../../utils/isAdmin');
 
+//GET ROUTES
 
+// Admin Routes // Get all Users
+router.get('/allusers',listAllUsers,)
 
-
+//Get User by ID 
 router.get('/:id', getUserById);
 
-// GET routes
-router.get('/users', (req, res, next) => {
-    searchUsers(req, res).catch(next);
-});
+// Get All UserProgress Recrods 
+router.get('/progress', getAllUserProgress);
 
-// Search Users for Users 
-router.post('/search', searchUsers);
-// POST routes 
+// Get User Progress by User Id: 
+router.get('/:userId/progress', getUserProgressByUserId)
 
+// Register New User
 router.post('/register', registerUser);
 
 
-// Admin Routes 
-router.get('/all', isAdmin, listAllUsers); 
+
+
+
 
 
 

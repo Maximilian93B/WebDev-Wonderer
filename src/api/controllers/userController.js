@@ -1,6 +1,6 @@
 // This file will handle user logic wihtin the app 
-const {User,}= require('../../models/index');
-const {Sequelize} = require('sequelize');
+const {User, UserProgress,}= require('../../models/index');
+
 
 //User registration 
 exports.registerUser = async (req, res) => {
@@ -25,10 +25,11 @@ exports.registerUser = async (req, res) => {
     }
 };
 
+
 // GET User by ID 
 exports.getUserById = async (req,res)=> {
     try {
-        const user = await User.findByPk(req.params.id, {
+        const user = await User.findByPk(req.params.user_id, {
             attributes: { exclude: ['password'] } // exclude users passwords for query 
         });
         
@@ -43,49 +44,62 @@ exports.getUserById = async (req,res)=> {
     }
 };
 
-// Search for users bu username
-exports.searchUsers = async (req, res) => {
-    console.log('searchUsers called');
-    const { username } = req.query; // Assuming a query parameter for search
-   if (!username) {
-    return res.status(400).json({message:'username is required'})
-   }
 
-   try{
-    const user = await User.findOne({
-        where:{
-            username:Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('username')), Sequelize.fn('LOWER',username))
-        },
-        attributes: ['id', 'username', 'email'],
+
+// Get User Progress --> UserProgress = User Profile 
+exports.getAllUserProgress = async (req,res) => {
+   try {
+    const allUserProgress = await UserProgress.findAll({
+
     });
 
-    if(!user) {
-        return res.status(404).json({message:'User not found'});
-    }
-
-    res.json(user);
+    res.json(allUserProgress)
    } catch (error) {
-    console.error('Error finding user:', error);
-    res.status(500).json({message: 'Failed to find user'})
+    console.error('Error fetching user progress:', error);
+    res.status(500).json({ message: 'Failed to retireve user progress records'})
    }
 };
 
+// GET User Progress By user ID 
 
+exports. getUserProgressByUserId = async (req,res)=>{
+    const userId = parseInt(req.params.user_id,10);
 
+    if(isNaN(userId)) {
+        return res.status(404).json({message: 'Invalid user ID'});
+    }
 
+    try {
+        const userProgress = await UserProgress.findAll({
+            where: {userId},
+            include: [{
+                model: User,
+                attributes: ['username',]
+            }]
+        });
+
+        if(!userProgress.length) {
+            return res.status(404).json({message:'No user progress records for this user found'})
+        }
+
+        res.json(userProgress);
+
+    } catch (error) {
+        console.error('Error fetching user progress data:', error);
+        res.status(500).json({message: 'Failed to retrieve user progress records'})
+    }
+};
 
 // ADMIN ONLY 
 //List all users 
-exports.listAllUsers = async (req,res) => {
+
+exports.listAllUsers = async (req, res) => {
     try {
-        const users = await User.findAll({
-            attributes: { exclude: ['password'] }
-        }) 
-        // response with all users 
-        res.json(users)
-    }catch (error) {
-        console.error('Could not List users', error);
-        res.status(500).json({ message: 'Failed to list all users '});
+        const getAllUsers = await User.findAll(); // Remove any conditions to fetch all users
+        res.json(getAllUsers);
+    } catch (error) {
+        console.error('Could not list users', error);
+        res.status(500).json({ message: 'Failed to list all users' });
     }
 };
- 
+
