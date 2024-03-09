@@ -6,12 +6,12 @@ const router = express.Router();
 
 //Import other routes here 
 const userRoutes = require('./userRoutes');
-
+const territoryRoutes = require('./territoryRoutes');
 
 
 // Mount router here 
 router.use('/users', userRoutes);
-
+router.use('/territories', territoryRoutes);
 
 
 
