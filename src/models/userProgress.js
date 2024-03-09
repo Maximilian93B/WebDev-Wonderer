@@ -9,25 +9,40 @@ module.exports = (sequelize, DataTypes) => {
       },
       user_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        references: {
+          model: 'users',
+          key: 'id',
+        },    
+        allowNull: false,  
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: true
+      },
+      pointsBar: {
+        type: DataTypes.INTEGER,
+        allowNull: false, 
+        defaultValue: 0
       },
       challenge_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
       },
       status: {
         type: DataTypes.ENUM('Incomplete', 'Complete'),
-        allowNull: false
+        allowNull: true
       },
       hash_received: {
         type: DataTypes.TEXT
       }
     }, {
+      modelName:'UserProgress',
       tableName: 'user_progress',
-      timestamps: false,
+      timestamps: true,
       underscored: true,
     });
-  
+
     return UserProgress;
   };
   
