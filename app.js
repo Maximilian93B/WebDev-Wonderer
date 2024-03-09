@@ -4,7 +4,7 @@ const initializePassport = require('./src/config/passport');
 const passport = require('passport');
 const session = require('express-session');
 const routes = require('./src/api/routes/index');
-
+const {logJsonResponse} = require('./src/utils/tools');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -36,6 +36,7 @@ app.use((err, req, res, next) => {
     next();
 });
 
+app.use(logJsonResponse);
 
 // Routes 
 

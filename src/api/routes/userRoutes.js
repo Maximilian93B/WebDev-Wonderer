@@ -8,11 +8,11 @@ const { registerUser, listAllUsers, getUserById, getAllUserProgress, getUserProg
 // Admin Routes // Get all Users
 router.get('/allusers',listAllUsers,)
 
-//Get User by ID 
-router.get('/:id', getUserById);
-
 // Get All UserProgress Recrods 
 router.get('/progress', getAllUserProgress);
+
+//Get User by ID 
+router.get('/:id', getUserById);
 
 // Get User Progress by User Id: 
 router.get('/:userId/progress', getUserProgressByUserId)
