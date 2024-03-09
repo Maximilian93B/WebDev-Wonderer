@@ -36,6 +36,20 @@ Challenge.belongsTo(Cell, { foreignKey: 'cell_id' });
 Challenge.hasMany(UserProgress, { foreignKey: 'challenge_id' });
 UserProgress.belongsTo(Challenge, { foreignKey: 'challenge_id' });
 
+// Define hooks here using the sequelize instance
+User.afterCreate(async (user, options) => {
+    console.log(`Creating UserProgress for user: ${user.id} ${user.username}`);
+    try {
+        await UserProgress.create({
+            user_id: user.id,  // Ensure this matches the column name in your UserProgress model.
+            username: user.username,// Add other fields as necessary, like default values for pointsBar, status, etc.
+        });
+        console.log(`UserProgress created for user ${user.username}`);
+    } catch (error) {
+        console.error('Error creating UserProgress:', error);
+    }
+});
+
 
 
 module.exports = {

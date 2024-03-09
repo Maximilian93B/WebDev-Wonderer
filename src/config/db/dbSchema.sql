@@ -60,3 +60,15 @@ CREATE TABLE user_progress (
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (challenge_id) REFERENCES challenges (id)
 );
+
+CREATE TABLE IF NOT EXISTS "user_progress" (
+    id SERIAL,
+    user_id INTEGER NOT NULL REFERENCES "User" ("id")
+    username INTEGER NOT NULL REFERENCES "User" ("username"),
+    points_bar INTEGER NOT NULL DEFAULT 0,
+    challenge_id INTEGER REFERENCES "challenges" ("id") 
+    hash_received TEXT,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    PRIMARY KEY ("id")
+);

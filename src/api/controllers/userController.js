@@ -1,5 +1,6 @@
 // This file will handle user logic wihtin the app 
-const {User}= require('../../models/index');
+const {User,}= require('../../models/index');
+const {Sequelize} = require('sequelize');
 
 //User registration 
 exports.registerUser = async (req, res) => {
@@ -42,27 +43,37 @@ exports.getUserById = async (req,res)=> {
     }
 };
 
-// Search for users 
+// Search for users bu username
 exports.searchUsers = async (req, res) => {
     console.log('searchUsers called');
-    const { query } = req.query; // Assuming a query parameter for search
-    try {
-        const users = await User.findAll({
-            where: {
-                // Adjust based on your search criteria; using username as an example
-                username: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('username')), 'LIKE', '%' + query.toLowerCase() + '%')
-            },
-            attributes: ['username',], // Specify attributes to return (exclude sensitive info)
-        });
-        
-        res.json(users);
-    } catch (error) {
-        console.error('Search users error:', error);
-        res.status(500).json({ message: 'Failed to search users' });
+    const { username } = req.query; // Assuming a query parameter for search
+   if (!username) {
+    return res.status(400).json({message:'username is required'})
+   }
+
+   try{
+    const user = await User.findOne({
+        where:{
+            username:Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('username')), Sequelize.fn('LOWER',username))
+        },
+        attributes: ['id', 'username', 'email'],
+    });
+
+    if(!user) {
+        return res.status(404).json({message:'User not found'});
     }
+
+    res.json(user);
+   } catch (error) {
+    console.error('Error finding user:', error);
+    res.status(500).json({message: 'Failed to find user'})
+   }
 };
 
-/*
+
+
+
+
 // ADMIN ONLY 
 //List all users 
 exports.listAllUsers = async (req,res) => {
@@ -77,4 +88,4 @@ exports.listAllUsers = async (req,res) => {
         res.status(500).json({ message: 'Failed to list all users '});
     }
 };
-*/ 
+ 
