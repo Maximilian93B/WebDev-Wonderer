@@ -1,6 +1,6 @@
 // This file will handle all simple territort logic 
 
-const { Territory, District, Cell, Challenge} = require('../../models/index');
+const { Territory, District, Cell, Challenge,UserTerritoryAccess} = require('../../models/index');
 
 
 exports.getTerritoryData = async (req, res) => {
@@ -31,6 +31,38 @@ exports.getTerritoryData = async (req, res) => {
 };
 
 
-// Check Territory Completion
+exports.addUserTerritoryAccess = async (req, res) => {
+    const { userId, territoryId, accessToken } = req.body.id; // Adjust according to your API design
 
+    try {
+      
+        // Check if a user territory access record already exists 
+        const existingAccess = await UserTerritoryAccess.findOne({
+            where: {
+                user_id: userId,
+                territory_id: territoryId,
+            }
+        });
+
+        if(existingAccess){
+            //update existing record with new access token 
+            existingAccess.access_token = accessToken;
+            await existingAccess.save();
+            console.log(`Access token updated for user ${userId} on territory ${territoryId}`);
+            res.json({message: 'Access token updated successfullly.',existingAccess});
+        } else {
+            // Create a new access record
+            const newUserAccess = await UserTerritoryAccess.create({
+                user_id: userId,
+                territory_id: territoryId,
+                access_token: accessToken,
+            });
+            console.log(`Created new access record for user ${userId}. Added territory ${territoryId} and token.`);
+            res.status(201).json({ message: 'User territory access created successfully.', newUserAccess });
+        }
+    } catch (error) {
+        console.error('Error updating user territory access:', error);
+        res.status(500).json({ message: 'Failed to update user territory access.', error: error.message });
+    }
+};
 

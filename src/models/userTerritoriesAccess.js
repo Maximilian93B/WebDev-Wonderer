@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-    
     const UserTerritoryAccess = sequelize.define('UserTerritoryAccess', {
         user_id: {
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: 'users', 
                 key: 'id',
@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         territory_id: {
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: 'territories', 
                 key: 'id',

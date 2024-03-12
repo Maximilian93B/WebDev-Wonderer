@@ -42,20 +42,13 @@ UserProgress.belongsTo(Challenge, { foreignKey: 'challenge_id' });
 
 User.belongsToMany(Territory, {
     through: UserTerritoryAccess,
-    foreignKey: 'user_id', 
-    otherKey: 'territory_id'
+    foreignKey: 'user_id',
 });
 
 Territory.belongsToMany(User, {
     through: UserTerritoryAccess,
     foreignKey: 'territory_id',
-    otherKey: 'user_id'
 });
-
-
-
-
-
 
 //Hooks
 
