@@ -10,6 +10,7 @@ const Territory = require('./territory')(sequelize, Sequelize.DataTypes);
 const District = require('./district')(sequelize, Sequelize.DataTypes);
 const Cell = require('./cells')(sequelize, Sequelize.DataTypes);
 const Challenge = require('./challenge')(sequelize, Sequelize.DataTypes);
+const UserTerritoryAccess = require('./userTerritoriesAccess')(sequelize, Sequelize.DataTypes);
 
 // Set assoiciations
 
@@ -35,6 +36,25 @@ Challenge.belongsTo(Cell, { foreignKey: 'cell_id' });
 // Challenge assoiciations 
 Challenge.hasMany(UserProgress, { foreignKey: 'challenge_id' });
 UserProgress.belongsTo(Challenge, { foreignKey: 'challenge_id' });
+
+
+// User associations with UserTerritoryAccess
+
+User.belongsToMany(Territory, {
+    through: UserTerritoryAccess,
+    foreignKey: 'user_id', 
+    otherKey: 'territory_id'
+});
+
+Territory.belongsToMany(User, {
+    through: UserTerritoryAccess,
+    foreignKey: 'territory_id',
+    otherKey: 'user_id'
+});
+
+
+
+
 
 
 //Hooks
@@ -64,4 +84,5 @@ module.exports = {
     District,
     Cell,
     Challenge, 
+    UserTerritoryAccess,
 };
