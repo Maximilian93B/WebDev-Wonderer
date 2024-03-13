@@ -118,7 +118,7 @@ exports.userLogin = (req,res,next) => {
                 return res.status(500).json({ message: err.message });
             }
             // NEED TO REDIRECT TO DASHBOARD WHEN READY 
-            res.send('Login Successful');
+            res.redirect('/dashboard');
         });
     })(req, res, next); // Pass next here as well
 };
