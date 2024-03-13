@@ -5,6 +5,7 @@ const passport = require('passport');
 const session = require('express-session');
 const routes = require('./src/api/routes/index');
 const {logJsonResponse} = require('./src/utils/tools');
+const flash = require('connect-flash'); 
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.use (session({
     cookie: { secure: false} // set to true if using HTTPS // add to .env and use secure cookies when ready 
 }));
 
+app.use(flash());
 
 //Iinit Passport 
 initializePassport(passport);
@@ -53,7 +55,7 @@ app.use('/', routes);
 async function assertDatabaseConnection() {
     console.log('Checking database connection...');
     try {
-        await sequelize.sync({ force: true , logging: console.log }); // Add logging config as needed
+        await sequelize.sync({ force: false , logging: console.log }); // Add logging config as needed
         console.log('DB synced!');
     } catch (error) { // Corrected typo
         console.error('Unable to sync DB!', error);

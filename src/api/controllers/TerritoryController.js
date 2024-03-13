@@ -2,9 +2,10 @@
 
 const { Territory, District, Cell, Challenge,UserTerritoryAccess} = require('../../models/index');
 
-
+// Get Territory DATA by ID 
 exports.getTerritoryData = async (req, res) => {
-    const { territory_id } = req.params.id;
+    const territory_id  = req.params.id
+    console.log(territory_id)
     // Finds Territory by territory_id 
     // Inlcudes the Distric,cell,challenges assoicated within the territory
     try {
@@ -31,30 +32,40 @@ exports.getTerritoryData = async (req, res) => {
 };
 
 
+// Needs to grab user_id , territory_id , access_token , from model 
+// Need to check if access_token is already awarded 
+// If exists then update access_token with new token 
+// save()the update 
+// If no UserTerritoryAccess found for that user then create one 
+// Hande errors 
+
 exports.addUserTerritoryAccess = async (req, res) => {
-    const { userId, territoryId, accessToken } = req.body.id; // Adjust according to your API design
+    // Grab request body
+    const { user_id: userId,  territory_id: territoryId,  access_token: accessToken } = req.body;
+    console.log(req.body);
 
     try {
-      
-        // Check if a user territory access record already exists 
+        console.log({ userId, territoryId, accessToken });
+
+        // Check if a user territory access record already exists
         const existingAccess = await UserTerritoryAccess.findOne({
             where: {
                 user_id: userId,
-                territory_id: territoryId,
+                territory_id: territoryId, // Corrected variable name here
             }
         });
 
-        if(existingAccess){
-            //update existing record with new access token 
+        if (existingAccess) {
+            // Update existing record with new access token
             existingAccess.access_token = accessToken;
             await existingAccess.save();
             console.log(`Access token updated for user ${userId} on territory ${territoryId}`);
-            res.json({message: 'Access token updated successfullly.',existingAccess});
+            res.json({ message: 'Access token updated successfully.', existingAccess });
         } else {
             // Create a new access record
             const newUserAccess = await UserTerritoryAccess.create({
                 user_id: userId,
-                territory_id: territoryId,
+                territory_id: territoryId, // Ensure consistency in variable names
                 access_token: accessToken,
             });
             console.log(`Created new access record for user ${userId}. Added territory ${territoryId} and token.`);

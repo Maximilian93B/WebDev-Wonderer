@@ -5,7 +5,7 @@ const {getTerritoryData, addUserTerritoryAccess} = require('../controllers/Terri
 
 
 // Get Data associated with Territory ID 
-router.get('/:territoryId/data', getTerritoryData);
+router.get('/:id/data', getTerritoryData);
 
 
 
@@ -14,8 +14,7 @@ router.get('/:territoryId/data', getTerritoryData);
 
 
 /// POST 
-
-router.post ('/access', addUserTerritoryAccess);
+router.post ('/territory-access', addUserTerritoryAccess);
 
 
 module.exports = router; 
