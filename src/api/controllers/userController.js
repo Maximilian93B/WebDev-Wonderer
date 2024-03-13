@@ -1,6 +1,6 @@
 // This file will handle user logic wihtin the app 
 const {User, UserProgress,}= require('../../models/index');
-
+const passport = require('passport');
 //User registration 
 exports.registerUser = async (req, res) => {
     // requires username, email , password as request body 
@@ -105,5 +105,22 @@ exports. getUserProgressByUserId = async (req,res)=>{
     }
 };
 
+exports.userLogin = (req,res,next) => {
+    passport.authenticate('local', (err,user,info) =>{
+        if(err) {
+            return res.status(500).json({message:err.message})
+        }
+        if(!user) {
+            return res.status(400).json({message: info.message});
+        }
+        req.login(user, err => {
+            if (err) {
+                return res.status(500).json({ message: err.message });
+            }
+            // NEED TO REDIRECT TO DASHBOARD WHEN READY 
+            res.send('Login Successful');
+        });
+    })(req, res, next); // Pass next here as well
+};
 
 

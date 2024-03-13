@@ -43,6 +43,12 @@ const logJsonResponse = (req, res, next) => {
     next()
 };
 
+const ensureAuthentication = ( req, res, next) => {
+   if (req.isAuthenticated()) {
+      return next();// User is authenticated 
+   }
+   req.flash('error','Please Log in to view that resource');
+   res.redirect('/users/login');
+}
 
-
-module.exports = {logJsonResponse};
+module.exports = {logJsonResponse, ensureAuthentication };

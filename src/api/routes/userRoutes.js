@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, listAllUsers, getUserById, getAllUserProgress, getUserProgressByUserId } = require('../controllers/userController'); // add controllers here as needed 
+const { registerUser, listAllUsers, getUserById, getAllUserProgress, getUserProgressByUserId, userLogin } = require('../controllers/userController'); // add controllers here as needed 
 const  passport  = require('passport');
 require('../../config/passport')(passport);
 //const isAdmin =require('../../utils/isAdmin');
@@ -23,10 +23,7 @@ router.get('/:userId/progress', getUserProgressByUserId)
 router.post('/register', registerUser);
 
 // User Login 
-router.post('/login', passport.authenticate('local', {
-    sucessRedirect: '/' ,
-    failure: '/login',
-    failureFlash: true // 
-})); 
+router.post('/login', userLogin); 
+
 
 module.exports = router; 

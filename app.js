@@ -6,6 +6,7 @@ const session = require('express-session');
 const routes = require('./src/api/routes/index');
 const {logJsonResponse} = require('./src/utils/tools');
 const flash = require('connect-flash'); 
+const { getDashboard } = require('./src/api/controllers/dashboardController');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -47,6 +48,8 @@ app.get('/', (req, res) => {
     console.log('Root endpoint hit');
     res.send('Root endpoint hit');
 });
+
+
 
 // Use Routes 
 app.use('/', routes);
