@@ -22,13 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       pointsBar: {
         type: DataTypes.INTEGER,
-        allowNull: false, 
+        allowNull: true, 
         defaultValue: 0
       },
       challenge_id: {
         type: DataTypes.INTEGER,
         allowNull: true
       },
+      completed_challenges: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        allowNull: true,
+        defaultValue: [],
+      },      
       status: {
         type: DataTypes.ENUM('Incomplete', 'Complete'),
         allowNull: true
