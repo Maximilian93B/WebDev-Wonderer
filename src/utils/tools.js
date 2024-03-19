@@ -1,17 +1,3 @@
-
-/*
- module.exports = function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.role === 'admin') {
-      return next();
-    }
-    return res.status(403).json({ message: 'Access denied' });
-    
-   console.loh('isAdmin middleware passed');
-   next();
-  };
-*/
-
-
   
 // We need to do a few more things IOT to make this work 
 /*
@@ -33,7 +19,6 @@ makeAdmin('yourUsername');
 */ 
 
 // Middleware to log JSON responses 
-
 const logJsonResponse = (req, res, next) => {
     const originalJson = res.json;
     res.json = function(data) {
@@ -43,6 +28,8 @@ const logJsonResponse = (req, res, next) => {
     next()
 };
 
+
+// Middleware for user authentication to reach endpoints
 const ensureAuthentication = ( req, res, next) => {
    if (req.isAuthenticated()) {
       return next();// User is authenticated 

@@ -10,7 +10,6 @@ const territoryRoutes = require('./territoryRoutes');
 const challengeRoutes = require('./challengeRoutes');
 const dashboardRoutes = require('./dashboardRoutes');
 
-
 // Mount router here 
 router.use('/users', userRoutes);
 router.use('/territories', territoryRoutes);

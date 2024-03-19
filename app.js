@@ -42,6 +42,8 @@ app.use((err, req, res, next) => {
 app.use(logJsonResponse);
 
 // Routes 
+app.use(express.static('public'));
+
 
 // Serve Root endopoint 
 app.get('/', (req, res) => {

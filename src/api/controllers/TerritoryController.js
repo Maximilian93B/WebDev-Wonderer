@@ -38,12 +38,10 @@ exports.getTerritoryData = async (req, res) => {
 // save()the update 
 // If no UserTerritoryAccess found for that user then create one 
 // Hande errors 
-
 exports.addUserTerritoryAccess = async (req, res) => {
     // Grab request body
     const { user_id: userId,  territory_id: territoryId,  access_token: accessToken } = req.body;
     console.log(req.body);
-
     try {
         console.log({ userId, territoryId, accessToken });
 

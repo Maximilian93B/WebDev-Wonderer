@@ -1,4 +1,4 @@
-
+// Import sequelize 
 const Sequelize = require('sequelize');
 const sequelize = require('../config/sequelize');
 
@@ -51,8 +51,6 @@ Territory.belongsToMany(User, {
 });
 
 //Hooks
-
-// Define hooks here using sequelize instance
 User.afterCreate(async (user, options) => {
     console.log(`Creating UserProgress for user: ${user.id} ${user.username}`);
     try {

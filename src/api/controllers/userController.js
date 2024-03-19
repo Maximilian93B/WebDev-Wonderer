@@ -105,6 +105,8 @@ exports. getUserProgressByUserId = async (req,res)=>{
     }
 };
 
+
+// Login as existing user
 exports.userLogin = (req,res,next) => {
     passport.authenticate('local', (err,user,info) =>{
         if(err) {
@@ -118,7 +120,7 @@ exports.userLogin = (req,res,next) => {
                 return res.status(500).json({ message: err.message });
             }
             // NEED TO REDIRECT TO DASHBOARD WHEN READY 
-            res.redirect('/dashboard');
+            res.redirect('/dashboard.html');
         });
     })(req, res, next); // Pass next here as well
 };
